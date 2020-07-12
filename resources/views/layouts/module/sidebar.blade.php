@@ -329,6 +329,27 @@
             </li>
             @endcan
 
+            @can('Hotels View')
+            <li class="treeview {{ (request()->routeIs('hotels*')) ? 'active' : '' }}">
+                <a href="#">
+                    <span>Hotel</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+                    <li class="{{ (request()->routeIs('hotels.index')) ? 'active' : '' }}"><a
+                            href="{{ route('hotels.index') }}"><i class="fa fa-circle-o"></i> List</a></li>
+
+                    @can('Hotels Create')
+                    <li class="{{ (request()->routeIs('hotels.create')) ? 'active' : '' }}"><a
+                            href="{{ route('hotels.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a></li>
+                    @endcan
+                </ul>
+            </li>
+            @endcan
+
         </ul>
     </section>
     <!-- /.sidebar -->

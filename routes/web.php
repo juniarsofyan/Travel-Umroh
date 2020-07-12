@@ -91,4 +91,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('reports')->group(function () {
         Route::get('/', 'ReportController@byCategory')->name('report.bycategory');
     });
+
+    Route::resource('hotels', 'HotelController')->except([
+        'show'
+    ]);
 });
