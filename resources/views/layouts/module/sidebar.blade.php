@@ -68,7 +68,7 @@
                                 <a href="{{ route('user.index') }}"><i class="fa fa-circle-o"></i> List</a>
                             </li>
 
-                            @can('Category Create')
+                            @can('user Create')
                             <li class="{{ (request()->routeIs('user.create')) ? 'active' : '' }}">
                                 <a href="{{ route('user.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a>
                             </li>
@@ -90,7 +90,7 @@
                             <li class="{{ (request()->routeIs('role.index')) ? 'active' : '' }}"><a
                                     href="{{ route('role.index') }}"><i class="fa fa-circle-o"></i> List</a></li>
 
-                            @can('Category Create')
+                            @can('Role Create')
                             <li class="{{ (request()->routeIs('role.create')) ? 'active' : '' }}"><a
                                     href="{{ route('role.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a></li>
                             @endcan
@@ -111,7 +111,7 @@
                             <li class="{{ (request()->routeIs('permission.index')) ? 'active' : '' }}"><a
                                     href="{{ route('permission.index') }}"><i class="fa fa-circle-o"></i> List</a></li>
 
-                            @can('Category Create')
+                            @can('Permission Create')
                             <li class="{{ (request()->routeIs('permission.create')) ? 'active' : '' }}"><a
                                     href="{{ route('permission.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a></li>
                             @endcan
