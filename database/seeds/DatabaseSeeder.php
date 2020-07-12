@@ -11,10 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(CreateSuperAdminUserSeeder::class);
+        $this->call(PermissionTableSeeder::class);
+        $this->call(CreateSuperAdminUserSeeder::class);
         $this->call(HotelsPermissionSeeder::class);
-        // $this->call(ProjectAndOfficerSeeder::class);
-        // $this->call(ReportByCategorySeeder::class);
-        // $this->call(PermissionTableSeeder::class);
+        $this->call(HotelsSeeder::class);
+        $this->call(AirlinesPermissionSeeder::class);
+        $this->call(AirlinesSeeder::class);
     }
 }
