@@ -350,6 +350,27 @@
             </li>
             @endcan
 
+            @can('Airlines View')
+            <li class="treeview {{ (request()->routeIs('airlines*')) ? 'active' : '' }}">
+                <a href="#">
+                    <span>Maskapai</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+                    <li class="{{ (request()->routeIs('airlines.index')) ? 'active' : '' }}"><a
+                            href="{{ route('airlines.index') }}"><i class="fa fa-circle-o"></i> List</a></li>
+
+                    @can('Airlines Create')
+                    <li class="{{ (request()->routeIs('airlines.create')) ? 'active' : '' }}"><a
+                            href="{{ route('airlines.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a></li>
+                    @endcan
+                </ul>
+            </li>
+            @endcan
+
         </ul>
     </section>
     <!-- /.sidebar -->
