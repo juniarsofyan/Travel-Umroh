@@ -122,7 +122,7 @@
             </li>
             @endcan
 
-            @can('Customer View')
+            {{-- @can('Customer View')
             <li class="treeview {{ (request()->routeIs('customer*')) ? 'active' : '' }}">
                 <a href="#">
                     <span>Customer</span>
@@ -246,7 +246,7 @@
                     @endcan
                 </ul>
             </li>
-            @endcan
+            @endcan --}}
 
             {{-- @can('Material View')
             <li class="treeview {{ (request()->routeIs('material*')) ? 'active' : '' }}">
@@ -269,7 +269,7 @@
             </li>
             @endcan --}}
 
-            @can('Officer View')
+            {{-- @can('Officer View')
             <li class="treeview {{ (request()->routeIs('officer*')) ? 'active' : '' }}">
                 <a href="#">
                     <span>Petugas</span>
@@ -327,7 +327,7 @@
                     @endcan
                 </ul>
             </li>
-            @endcan
+            @endcan --}}
 
             @can('Hotels View')
             <li class="treeview {{ (request()->routeIs('hotels*')) ? 'active' : '' }}">
