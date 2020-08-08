@@ -99,4 +99,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('airlines', 'AirlineController')->except([
         'show'
     ]);
+
+    Route::resource('rooms', 'RoomController')->except([
+        'show'
+    ]);
 });
