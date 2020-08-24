@@ -103,4 +103,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('rooms', 'RoomController')->except([
         'show'
     ]);
+
+    Route::livewire('itinerary-templates/create', 'itinerary.create-itinerary-template');
+    Route::resource('itinerary-templates', 'ItineraryTemplateController')->except([
+        'create'
+    ]);
 });

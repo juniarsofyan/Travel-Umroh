@@ -1,14 +1,14 @@
 <header class="main-header">
-    <!-- Logo -->
+    {{-- Logo  --}}
     <a href="{{ route('dashboard.index') }}" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
+        {{-- mini logo for sidebar mini 50x50 pixels  --}}
         <span class="logo-mini"><b>PT. X</b></span>
-        <!-- logo for regular state and mobile devices -->
+        {{-- logo for regular state and mobile devices  --}}
         <span class="logo-lg"><b>PT. X</b></span>
     </a>
-    <!-- Header Navbar: style can be found in header.less -->
+    {{-- Header Navbar: style can be found in header.less  --}}
     <nav class="navbar navbar-static-top">
-        <!-- Sidebar toggle button-->
+        {{-- Sidebar toggle button --}}
         <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
             <span class="sr-only">Toggle navigation</span>
         </a>
@@ -224,7 +224,7 @@
                     </ul>
                 </li> --}}
 
-                <!-- User Account: style can be found in dropdown.less -->
+                {{-- User Account: style can be found in dropdown.less --}}
                 @php $user = Auth::user(); @endphp
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -232,7 +232,7 @@
                         <span class="hidden-xs">{{ $user->name }}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <!-- User image -->
+                        {{-- User image --}}
                         <li class="user-header">
                             <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
 
@@ -260,7 +260,7 @@
                         </li>
                          --}}
 
-                        <!-- Menu Footer-->
+                        {{-- Menu Footer --}}
                         <li class="user-footer">
                             <div class="pull-left">
                                 <a href="#" class="btn btn-default btn-flat">Profile</a>
@@ -279,7 +279,7 @@
                         </li>
                     </ul>
                 </li>
-                <!-- Control Sidebar Toggle Button -->
+                {{-- Control Sidebar Toggle Button  --}}
                 {{-- <li>
                     <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
                 </li> --}}

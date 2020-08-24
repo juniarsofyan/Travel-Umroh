@@ -1,8 +1,8 @@
-<!-- Left side column. contains the logo and sidebar -->
+{{-- Left side column. contains the logo and sidebar --}}
 <aside class="main-sidebar">
-    <!-- sidebar: style can be found in sidebar.less -->
+    {{-- sidebar: style can be found in sidebar.less --}}
     <section class="sidebar">
-        <!-- Sidebar user panel -->
+        {{-- Sidebar user panel --}}
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="{{ asset('dist/img/user2-160x160.jpg') }}" class="img-circle" alt="User Image">
@@ -29,8 +29,8 @@
         </form>
         --}}
 
-        <!-- /.search form -->
-        <!-- sidebar menu: : style can be found in sidebar.less -->
+        {{-- /.search form --}}
+        {{-- sidebar menu: : style can be found in sidebar.less --}}
         <ul class="sidebar-menu" data-widget="tree">
             <li class="header">MAIN NAVIGATION</li>
             <li class="treeview">
@@ -355,5 +355,5 @@
 
         </ul>
     </section>
-    <!-- /.sidebar -->
+    {{-- /.sidebar --}}
 </aside>
