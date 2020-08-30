@@ -87,7 +87,6 @@ class TemplateItineraryController extends Controller
 
         try {
 
-            // BENERIN INI, PAS SAVE DETAIL ITINERARY
             //update data
             $templateItinerary->update([
                 'kode_template' => $request->kode_template,

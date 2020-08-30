@@ -123,7 +123,6 @@
             </li>
             @endcan
 
-            {{-- FIX MULTIPLE PRIVILEGES LATER --}}
             @canany(['Hotel View', 'Maskapai View', 'Jenis Kamar View'])
             <li class="treeview {{ (request()->routeIs('hotel*')) ? 'active' : '' || (request()->routeIs('maskapai*')) ? 'active' : '' || (request()->routeIs('jenis-kamar*')) ? 'active' : '' }}">
                 <a href="#">
@@ -155,7 +154,7 @@
             </li>
             @endcan
 
-            {{-- @can('Customer View') --}}
+            @canany(['Paket Umroh View', 'Template Itinerary View'])
             <li class="treeview">
                 <a href="#">
                     <span>Paket Umroh</span>
@@ -165,16 +164,20 @@
                 </a>
 
                 <ul class="treeview-menu">
-                    <li class="">
-                        <a href=""><i class="fa fa-circle-o"></i>Data</a></li>
+                    @can('Template Itinerary View')
+                    <li class="{{ (request()->routeIs('template-itinerary.index')) ? 'active' : '' }}">
+                        <a href="{{ route('template-itinerary.index') }}"><i class="fa fa-circle-o"></i>Template Itinerary</a>
+                    </li>
+                    @endcan
 
-                    {{-- @can('Customer Create') --}}
-                    <li class="{{ (request()->routeIs('customer.create')) ? 'active' : '' }}">
-                        <a href="{{ route('itinerary-templates.index') }}"><i class="fa fa-circle-o"></i>Template Itinerary</a></li>
-                    {{-- @endcan --}}
+                    @can('Paket Umroh View')
+                    <li class="{{ (request()->routeIs('paket-umroh.index')) ? 'active' : '' }}">
+                        <a href="{{ route('paket-umroh.index') }}"><i class="fa fa-circle-o"></i>Paket Umroh</a>
+                    </li>
+                    @endcan
                 </ul>
             </li>
-            {{-- @endcan --}}
+            @endcan
 
             {{-- 
             @can('Category View')

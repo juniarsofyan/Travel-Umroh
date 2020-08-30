@@ -55,7 +55,7 @@
                                     id="nama" required>
                             </div>
                             <div class="form-group">
-                                <label for="jumlah_orang">Jumlah Kasur</label>
+                                <label for="jumlah_orang">Jumlah Orang</label>
                                 <input type="number" min="1" name="jumlah_orang"
                                     value="{{ $jenisKamar->jumlah_orang }}"
                                     class="form-control {{ $errors->has('jumlah_orang') ? 'is-invalid':'' }}"
