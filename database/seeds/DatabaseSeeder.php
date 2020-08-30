@@ -13,9 +13,11 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(PermissionTableSeeder::class);
         $this->call(CreateSuperAdminUserSeeder::class);
-        $this->call(HotelsPermissionSeeder::class);
-        $this->call(HotelsSeeder::class);
-        $this->call(AirlinesPermissionSeeder::class);
-        $this->call(AirlinesSeeder::class);
+        $this->call(HotelPermissionSeeder::class);
+        $this->call(HotelSeeder::class);
+        $this->call(MaskapaiPermissionSeeder::class);
+        $this->call(MaskapaiSeeder::class);
+        $this->call(JenisKamarPermissionSeeder::class);
+        $this->call(JenisKamarSeeder::class);
     }
 }

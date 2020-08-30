@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Hotel;
+use App\JenisKamar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class HotelController extends Controller
+class JenisKamarController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class HotelController extends Controller
      */
     public function index()
     {
-        $daftarHotel = Hotel::orderBy('nama', 'ASC')->get();
-        return view('hotel.index', compact('daftarHotel'));
+        $daftarJenisKamar = JenisKamar::orderBy('nama', 'ASC')->get();
+        return view('jenis-kamar.index', compact('daftarJenisKamar'));
     }
 
     /**
@@ -26,7 +26,7 @@ class HotelController extends Controller
      */
     public function create()
     {
-        return view('hotel.create');
+        return view('jenis-kamar.create');
     }
 
     /**
@@ -38,18 +38,20 @@ class HotelController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama' => 'required|string|max:50',
-            'lokasi' => 'string',
+            'nama' => 'required|string',
+            'jumlah_orang' => 'required|integer',
+            'jumlah_kasur' => 'required|integer',
         ]);
 
         try {
-            $hotel = hotel::create([
+            $jenisKamar = JenisKamar::create([
                 'nama' => $request->nama,
-                'lokasi' => $request->lokasi,
+                'jumlah_orang' => $request->jumlah_orang,
+                'jumlah_kasur' => $request->jumlah_kasur,
                 'user_id' => Auth::user()->id
             ]);
 
-            return redirect()->route('hotel.index')->with(['success' => 'Hotel: ' . $hotel->nama . ' ditambahkan']);
+            return redirect()->route('jenis-kamar.index')->with(['success' => 'Jenis Kamar: ' . $jenisKamar->nama . ' ditambahkan']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }
@@ -58,38 +60,40 @@ class HotelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Hotel  $hotel
+     * @param  \App\JenisKamar  $jenisKamar
      * @return \Illuminate\Http\Response
      */
-    public function edit(Hotel $hotel)
+    public function edit(JenisKamar $jenisKamar)
     {
-        return view('hotel.edit', compact('hotel'));
+        return view('jenis-kamar.edit', compact('jenisKamar'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Hotel  $hotel
+     * @param  \App\JenisKamar  $jenisKamar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Hotel $hotel)
+    public function update(Request $request, JenisKamar $jenisKamar)
     {
         $this->validate($request, [
-            'nama' => 'required|string|max:50',
-            'lokasi' => 'string',
+            'nama' => 'required|string',
+            'jumlah_orang' => 'required|integer',
+            'jumlah_kasur' => 'required|integer',
         ]);
 
         try {
             //update data
-            $hotel->update([
+            $jenisKamar->update([
                 'nama' => $request->nama,
-                'lokasi' => $request->lokasi,
+                'jumlah_orang' => $request->jumlah_orang,
+                'jumlah_kasur' => $request->jumlah_kasur,
                 'user_id' => Auth::user()->id
             ]);
 
             //redirect ke route kategori.index
-            return redirect(route('hotel.index'))->with(['success' => 'Hotel ' . $hotel->nama . ' diubah']);
+            return redirect(route('jenis-kamar.index'))->with(['success' => 'Jenis Kamar: ' . $jenisKamar->nama . ' diubah']);
         } catch (\Exception $e) {
             //jika gagal, redirect ke form yang sama lalu membuat flash message error
             return redirect()->back()->with(['error' => $e->getMessage()]);
@@ -99,12 +103,12 @@ class HotelController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Hotel  $hotel
+     * @param  \App\JenisKamar  $jenisKamar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Hotel $hotel)
+    public function destroy(JenisKamar $jenisKamar)
     {
-        $hotel->delete();
-        return redirect()->back()->with(['success' => 'Hotel: ' . $hotel->nama . " telah dihapus!"]);
+        $jenisKamar->delete();
+        return redirect()->back()->with(['success' => 'Jenis Kamar: ' . $jenisKamar->nama . " telah dihapus!"]);
     }
 }

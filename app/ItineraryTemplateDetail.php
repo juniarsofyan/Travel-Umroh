@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ItineraryTemplateDetail extends Model
 {
-    protected $fillable = ['itinerary_templates_id', 'hari_ke', 'kegiatan', 'keterangan', 'estimasi'];
+    protected $fillable = ['itinerary_templates_id', 'hari_ke', 'kegiatan', 'keterangan', 'tipe', 'estimasi'];
 
     public function masterTemplate()
     {

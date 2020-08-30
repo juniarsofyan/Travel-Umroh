@@ -54,33 +54,11 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    @can('User View')
-                    <li class="treeview {{ (request()->routeIs('user*')) ? 'active' : '' }}">
-                        <a href="#">
-                            <span>User</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-
-                        <ul class="treeview-menu">
-                            <li class="{{ (request()->routeIs('user.index')) ? 'active' : '' }}">
-                                <a href="{{ route('user.index') }}"><i class="fa fa-circle-o"></i> List</a>
-                            </li>
-
-                            @can('user Create')
-                            <li class="{{ (request()->routeIs('user.create')) ? 'active' : '' }}">
-                                <a href="{{ route('user.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a>
-                            </li>
-                            @endcan
-                        </ul>
-                    </li>
-                    @endcan
 
                     @can('Role View')
                     <li class="treeview {{ (request()->routeIs('role*')) ? 'active' : '' }}">
                         <a href="#">
-                            <span>Tipe User</span>
+                            <span>Grup User</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
@@ -118,31 +96,87 @@
                         </ul>
                     </li>
                     @endcan
+
+                    @can('User View')
+                    <li class="treeview {{ (request()->routeIs('user*')) ? 'active' : '' }}">
+                        <a href="#">
+                            <span>User</span>
+                            <span class="pull-right-container">
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </span>
+                        </a>
+
+                        <ul class="treeview-menu">
+                            <li class="{{ (request()->routeIs('user.index')) ? 'active' : '' }}">
+                                <a href="{{ route('user.index') }}"><i class="fa fa-circle-o"></i> List</a>
+                            </li>
+
+                            @can('User Create')
+                            <li class="{{ (request()->routeIs('user.create')) ? 'active' : '' }}">
+                                <a href="{{ route('user.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a>
+                            </li>
+                            @endcan
+                        </ul>
+                    </li>
+                    @endcan
                 </ul>
             </li>
             @endcan
 
-            {{-- @can('Customer View')
-            <li class="treeview {{ (request()->routeIs('customer*')) ? 'active' : '' }}">
+            {{-- FIX MULTIPLE PRIVILEGES LATER --}}
+            @canany(['Hotel View', 'Maskapai View', 'Jenis Kamar View'])
+            <li class="treeview {{ (request()->routeIs('hotel*')) ? 'active' : '' || (request()->routeIs('maskapai*')) ? 'active' : '' || (request()->routeIs('jenis-kamar*')) ? 'active' : '' }}">
                 <a href="#">
-                    <span>Customer</span>
+                    <span>Akomodasi</span>
                     <span class="pull-right-container">
                         <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
 
                 <ul class="treeview-menu">
-                    <li class="{{ (request()->routeIs('customer.index')) ? 'active' : '' }}"><a
-                            href="{{ route('customer.index') }}"><i class="fa fa-circle-o"></i> List</a></li>
+                    @can('Hotel View')
+                    <li class="{{ (request()->routeIs('hotel.index')) ? 'active' : '' }}">
+                        <a href="{{ route('hotel.index') }}"><i class="fa fa-circle-o"></i> Hotel</a>
+                    </li>
+                    @endcan
 
-                    @can('Customer Create')
-                    <li class="{{ (request()->routeIs('customer.create')) ? 'active' : '' }}"><a
-                            href="{{ route('customer.create') }}"><i class="fa fa-circle-o"></i> Buat Baru</a></li>
+                    @can('Maskapai View')
+                    <li class="{{ (request()->routeIs('maskapai.index')) ? 'active' : '' }}">
+                        <a href="{{ route('maskapai.index') }}"><i class="fa fa-circle-o"></i> Maskapai</a>
+                    </li>
+                    @endcan
+                    
+                    @can('Jenis Kamar View')
+                    <li class="{{ (request()->routeIs('jenis-kamar.index')) ? 'active' : '' }}">
+                        <a href="{{ route('jenis-kamar.index') }}"><i class="fa fa-circle-o"></i> Jenis Kamar</a>
+                    </li>
                     @endcan
                 </ul>
             </li>
             @endcan
 
+            {{-- @can('Customer View') --}}
+            <li class="treeview">
+                <a href="#">
+                    <span>Paket Umroh</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+                    <li class="">
+                        <a href=""><i class="fa fa-circle-o"></i>Data</a></li>
+
+                    {{-- @can('Customer Create') --}}
+                    <li class="{{ (request()->routeIs('customer.create')) ? 'active' : '' }}">
+                        <a href="{{ route('itinerary-templates.index') }}"><i class="fa fa-circle-o"></i>Template Itinerary</a></li>
+                    {{-- @endcan --}}
+                </ul>
+            </li>
+            {{-- @endcan --}}
+
+            {{-- 
             @can('Category View')
             <li class="treeview {{ (request()->routeIs('category*')) ? 'active' : '' }}">
                 <a href="#">
@@ -329,29 +363,7 @@
             </li>
             @endcan --}}
 
-            {{-- FIX MULTIPLE PRIVILEGES LATER --}}
-            @can('Hotels View')
-            <li class="treeview {{ (request()->routeIs('hotels*')) ? 'active' : '' }}">
-                <a href="#">
-                    <span>Akomodasi</span>
-                    <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </span>
-                </a>
-
-                <ul class="treeview-menu">
-                    <li class="{{ (request()->routeIs('hotels.index')) ? 'active' : '' }}">
-                        <a href="{{ route('hotels.index') }}"><i class="fa fa-circle-o"></i> Hotel</a>
-                    </li>
-                    <li class="{{ (request()->routeIs('airlines.index')) ? 'active' : '' }}">
-                        <a href="{{ route('airlines.index') }}"><i class="fa fa-circle-o"></i> Maskapai</a>
-                    </li>
-                    <li class="{{ (request()->routeIs('rooms.index')) ? 'active' : '' }}">
-                        <a href="{{ route('rooms.index') }}"><i class="fa fa-circle-o"></i> Jenis Kamar</a>
-                    </li>
-                </ul>
-            </li>
-            @endcan
+            
 
         </ul>
     </section>

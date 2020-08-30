@@ -4,7 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Airline extends Model
+class Maskapai extends Model
 {
-    protected $fillable = ['code', 'name'];
+    protected $table = 'maskapai';
+    
+    protected $fillable = ['kode_maskapai', 'nama', 'user_id'];
 }

@@ -92,19 +92,25 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/', 'ReportController@byCategory')->name('report.bycategory');
     });
 
-    Route::resource('hotels', 'HotelController')->except([
+    Route::resource('hotel', 'HotelController')->except([
         'show'
     ]);
 
-    Route::resource('airlines', 'AirlineController')->except([
+    Route::resource('maskapai', 'MaskapaiController')->except([
         'show'
     ]);
 
-    Route::resource('rooms', 'RoomController')->except([
+    Route::resource('jenis-kamar', 'JenisKamarController')->except([
+        'show'
+    ]);
+    
+    Route::resource('paket-umroh', 'PaketUmrohController');
+
+    Route::resource('template-itinerary', 'TemplateItineraryController')->except([
         'show'
     ]);
 
-    Route::livewire('itinerary-templates/create', 'itinerary.create-itinerary-template');
+    Route::livewire('itinerary-templates/create', 'itinerary.create-itinerary-template')->name('itinerary-templates.create');
     Route::resource('itinerary-templates', 'ItineraryTemplateController')->except([
         'create'
     ]);
