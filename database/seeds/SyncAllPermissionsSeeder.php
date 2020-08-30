@@ -15,6 +15,7 @@ class SyncAllPermissionsSeeder extends Seeder
     public function run()
     {
         $superAdminRole = Role::where('name', 'Super Admin')->first();
+
         $allPermissions = Permission::pluck('id', 'id')->all();
 
         $superAdminRole->syncPermissions($allPermissions);

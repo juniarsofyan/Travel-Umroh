@@ -19,5 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call(MaskapaiSeeder::class);
         $this->call(JenisKamarPermissionSeeder::class);
         $this->call(JenisKamarSeeder::class);
+        $this->call(TemplateItineraryPermissionSeeder::class);
+        $this->call(PaketUmrohPermissionSeeder::class);
+        $this->call(SyncAllPermissionsSeeder::class);
     }
 }
