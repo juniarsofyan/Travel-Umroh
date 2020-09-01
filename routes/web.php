@@ -110,6 +110,10 @@ Route::group(['middleware' => ['auth']], function () {
         'show'
     ]);
 
+    Route::resource('jadwal-penerbangan', 'JadwalPenerbanganController')->except([
+        'show'
+    ]);
+
     Route::livewire('itinerary-templates/create', 'itinerary.create-itinerary-template')->name('itinerary-templates.create');
     Route::resource('itinerary-templates', 'ItineraryTemplateController')->except([
         'create'

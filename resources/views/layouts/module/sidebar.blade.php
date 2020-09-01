@@ -150,6 +150,12 @@
                         <a href="{{ route('jenis-kamar.index') }}"><i class="fa fa-circle-o"></i> Jenis Kamar</a>
                     </li>
                     @endcan
+
+                    @can('Jadwal Penerbangan View')
+                    <li class="{{ (request()->routeIs('jadwal-penerbangan.index')) ? 'active' : '' }}">
+                        <a href="{{ route('jadwal-penerbangan.index') }}"><i class="fa fa-circle-o"></i> Jadwal Penerbangan</a>
+                    </li>
+                    @endcan
                 </ul>
             </li>
             @endcan
