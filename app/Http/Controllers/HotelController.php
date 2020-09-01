@@ -43,7 +43,7 @@ class HotelController extends Controller
         ]);
 
         try {
-            $hotel = hotel::create([
+            $hotel = Hotel::create([
                 'nama' => $request->nama,
                 'lokasi' => $request->lokasi,
                 'user_id' => Auth::user()->id
