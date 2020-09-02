@@ -12,7 +12,8 @@ class ItineraryPaketUmroh extends Model
         'hari_ke', 
         'kegiatan', 
         'keterangan', 
-        'waktu', 
+        'waktu_mulai', 
+        'waktu_selesai', 
         'paket_umroh_id', 
         'user_id'
     ];

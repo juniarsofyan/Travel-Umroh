@@ -2,9 +2,14 @@
     {{-- Logo  --}}
     <a href="{{ route('dashboard.index') }}" class="logo">
         {{-- mini logo for sidebar mini 50x50 pixels  --}}
-        <span class="logo-mini"><b>PT. X</b></span>
+        <span class="logo-mini">
+            <img src="{{ asset('assets/images/logo.png') }}" alt="Eltura Travel" height="50">
+        </span>
         {{-- logo for regular state and mobile devices  --}}
-        <span class="logo-lg"><b>PT. X</b></span>
+        <span class="logo-lg">
+            <img src="{{ asset('assets/images/favicon.ico') }}" alt="Eltura Travel">
+            <b>Eltura Travel</b>
+        </span>
     </a>
     {{-- Header Navbar: style can be found in header.less  --}}
     <nav class="navbar navbar-static-top">
