@@ -137,10 +137,10 @@
                         </div>
                         <!-- /.box-body -->
 
-                        <div class="box-footer">
+                        {{-- <div class="box-footer">
                             <button type="reset" class="btn btn-default">Cancel</button> &nbsp;&nbsp;
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
+                        </div> --}}
                     </form>
                 </div>
                 <!-- /.box -->
@@ -156,7 +156,26 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">Kegiatan</h3>
                     </div>
-                    <div class="box-body" id="events-list">
+                    {{-- <div class="box-body" id="events-list"> --}}
+                    <div class="box-body" id="itinerary-list">
+
+                        <table id="datatable-standard" class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Hari ke</th>
+                                    <th>Tanggal</th>
+                                    <th>Kegiatan</th>
+                                    <th>Keterangan</th>
+                                    <th>Estimasi</th>
+                                    <th>Jam Mulai</th>
+                                    <th>Jam Selesai</th>
+                                </tr>
+                            </thead>
+                            <tbody id="event-list">
+                                
+                            </tbody>
+                        </table>
                         
                         {{-- <div class="row row-container">
                             <div class="col-xs-1">
@@ -222,45 +241,61 @@
 @section('scripts')
     <script>
         $(function() {
-            $('select[name=template_itinerary]').change(function() {
-
-                let jadwalPenerbangan = $('select[name=jadwal_penerbangan]').val();
-
-                $.ajax({
-                    url: '{{ env('APP_API_URL') }}paket-umroh/generate-itinerary/' + jadwalPenerbangan + '/' + $(this).val(),
-                    type: 'GET',
-                    headers: {
-                        // 'Access-Control-Allow-Origin': '*',
-                    },
-                    crossDomain: true,
-                    dataType: 'json',
-                    success: function(result) {
-
-                        var newElementIndex = $(".row-container").length;
-
-                        // console.log(result);
-
-                        $("#events-list").empty();
-
-                        result.forEach(item => {
-                            var newElement = `<div class='row row-container' id='row${newElementIndex}'> <div class='col-xs-1'> <div class='form-group'> <label>${newElementIndex + 1}</label> </div> </div> <div class='col-xs-1'> <div class='form-group'> <label>Hari ke:</label> <input type='number' name='events[${newElementIndex}][hari_ke]' value='${item.hari_ke}' class='form-control' step='1' min='1'/> </div> </div> <div class='col-xs-3'> <div class='form-group'> <label>Kegiatan</label> <textarea name='events[${newElementIndex}][kegiatan]' class='form-control' cols='5' rows='5'>${item.kegiatan}</textarea> </div> </div> <div class='col-xs-2'> <div class='form-group'> <label>Keterangan</label> <textarea name='events[${newElementIndex}][keterangan]' class='form-control' cols='5' rows='5'>${item.keterangan}</textarea> </div> </div> <div class='col-xs-2'> <div class='form-group'> <label>Estimasi (Jam)</label> <input type='number' name='events[${newElementIndex}][estimasi]' class='form-control' step='0.5' min='0'/> </div> </div> <div class='col-xs-1'> <div class='form-group'> <label>Sebelum penerbangan</label> <input type='checkbox' name='events[${newElementIndex}][tipe]' value='SEBELUM PENERBANGAN'> </div> </div> <div class='col-xs-2'> <div class='form-group'> <br/> <button type='button' class='btn btn-danger' onclick='removeEventInputs(row${newElementIndex})'> <i class='fa fa-trash'></i> </button> &nbsp; <button type='button' class='btn btn-primary' onclick='appendNewEventInputs()'> <i class='fa fa-plus'></i> </button> </div> </div> </div>`;
-                            $("#events-list").append(newElement);
-                        });
-                        
-
-
-                        /* var select = $('select[name=kota]');
-
-                        select.empty();
-
-                        select.append('<option selected disabled>-- Pilih Kota --</option>');
-
-                        $.each(result.data,function(key, value) {
-                            select.append('<option value=' + value.city_id + '>' + value.city_name + '</option>');
-                        }); */
-                    }
-                });
+            $('select[name=jadwal_penerbangan]').change(function() {
+                generateItinerary();
             });
+
+            $('select[name=template_itinerary]').change(function() {
+                generateItinerary();
+            });
+
+            
         });
+
+        function generateItinerary() {
+                
+                let jadwalPenerbangan = $('select[name=jadwal_penerbangan]').val();
+                let templateItinerary = $('select[name=template_itinerary]').val();
+
+                if (jadwalPenerbangan && templateItinerary) {
+                    $.ajax({
+                        url: '{{ env('APP_API_URL') }}paket-umroh/generate-itinerary/' + jadwalPenerbangan + '/' + templateItinerary,
+                        type: 'GET',
+                        headers: {
+                            // 'Access-Control-Allow-Origin': '*',
+                        },
+                        crossDomain: true,
+                        dataType: 'json',
+                        success: function(result) {
+
+                            var newElementIndex = 0;
+
+                            // console.log(result);
+
+                            $("tbody[id=event-list]").empty();
+
+                            result.forEach(item => {
+                                var newElement = `<tr> <td>${newElementIndex + 1}</td> <td> <input type='hidden' name='events[${newElementIndex}][hari_ke]' value='${item.hari_ke}'/> ${item.hari_ke} </td> <td> <input type='hidden' name='events[${newElementIndex}][tanggal]' value='${item.tanggal_mulai}'/> ${item.tanggal_mulai} </td> <td> <input type='hidden' name='events[${newElementIndex}][kegiatan]' value='${item.kegiatan}'/> ${item.kegiatan} </td> <td> <input type='hidden' name='events[${newElementIndex}][keterangan]' value='${item.keterangan}'/> ${item.keterangan} </td> <td> <input type='hidden' name='events[${newElementIndex}][tanggal]' value='${item.estimasi}' /> ${item.estimasi} jam </td> <td> <input type='text' name='events[${newElementIndex}][jam_mulai]' value='${item.jam_mulai}' class='form-control'/> </td> <td> <input type='text' name='events[${newElementIndex}][jam_selesai]' value='${item.jam_selesai}' class='form-control'/> </td> </tr>`;
+                                $("tbody[id=event-list]").append(newElement);
+                                newElementIndex++;
+                            });
+
+                            
+                            
+
+
+                            /* var select = $('select[name=kota]');
+
+                            select.empty();
+
+                            select.append('<option selected disabled>-- Pilih Kota --</option>');
+
+                            $.each(result.data,function(key, value) {
+                                select.append('<option value=' + value.city_id + '>' + value.city_name + '</option>');
+                            }); */
+                        }
+                    });
+                }
+            }
     </script>
 @endsection

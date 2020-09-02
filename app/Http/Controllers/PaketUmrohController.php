@@ -118,19 +118,27 @@ class PaketUmrohController extends Controller
                 $estimasiJam = floor($template->estimasi);
                 $estimasiMenit = ($template->estimasi - $estimasiJam) * 60;
 
-                $waktuTakeOff = $jadwalPenerbangan->tanggal . ' ' . $jadwalPenerbangan->waktu_takeoff;
+                $waktuTakeOff = Carbon::parse($jadwalPenerbangan->tanggal . ' ' . $jadwalPenerbangan->waktu_takeoff);
+                
                 $waktuMulai = Carbon::parse($waktuTakeOff)->subHours($estimasiJam)->subMinutes($estimasiMenit)->toMutable();
-                $tanggalKegiatan = $waktuMulai->toDateString();
+                $tanggalMulai = $waktuMulai->toDateString();
+                $jamMulai = $waktuMulai->toTimeString();
+                
                 $waktuSelesai = $waktuTakeOff;
+                $tanggalSelesai = $waktuSelesai->toDateString();
+                $jamSelesai = $waktuSelesai->toTimeString();
 
                 $newItinerary[$index]['hari_ke'] = $template->hari_ke;
-                $newItinerary[$index]['tanggal'] = $tanggalKegiatan;
                 $newItinerary[$index]['kegiatan'] = $template->kegiatan;
                 $newItinerary[$index]['keterangan'] = $template->keterangan;
-                $newItinerary[$index]['waktu_mulai'] = $waktuMulai->toDateTimeString();
-                $newItinerary[$index]['waktu_selesai'] = $waktuSelesai;
+                $newItinerary[$index]['estimasi'] = $template->estimasi;
+                $newItinerary[$index]['tanggal_mulai'] = $tanggalMulai;
+                $newItinerary[$index]['jam_mulai'] = $jamMulai;
+                $newItinerary[$index]['tanggal_selesai'] = $tanggalSelesai;
+                $newItinerary[$index]['jam_selesai'] = $jamSelesai;
                 $newItinerary[$index]['paket_umroh_id'] = 0;
                 $newItinerary[$index]['user_id'] = 0;
+
             } else {
                 
                 $previousIndex = $index - 1;
@@ -138,17 +146,22 @@ class PaketUmrohController extends Controller
                 $estimasiJam = floor($template->estimasi);
                 $estimasiMenit = ($template->estimasi - $estimasiJam) * 60;
 
-                $previousWaktuSelesai = $newItinerary[$previousIndex]['waktu_selesai'];
-                $tanggalKegiatan = Carbon::parse($previousWaktuSelesai)->toMutable();
-                $waktuMulai = $tanggalKegiatan->toDateTimeString();
-                $waktuSelesai = Carbon::parse($waktuMulai)->addHours($estimasiJam)->addMinutes($estimasiMenit)->toMutable();
+                $waktuMulai = Carbon::parse($newItinerary[$previousIndex]['tanggal_selesai'] . ' ' . $newItinerary[$previousIndex]['jam_selesai'])->toMutable();
+                $tanggalMulai = $waktuMulai->toDateString();
+                $jamMulai = $waktuMulai->toTimeString();
+
+                $waktuSelesai = $waktuMulai->addHours($estimasiJam)->addMinutes($estimasiMenit)->toMutable();;
+                $tanggalSelesai = $waktuSelesai->toDateString();
+                $jamSelesai = $waktuSelesai->toTimeString();
 
                 $newItinerary[$index]['hari_ke'] = $template->hari_ke;
-                $newItinerary[$index]['tanggal'] = $tanggalKegiatan->toDateString();
                 $newItinerary[$index]['kegiatan'] = $template->kegiatan;
                 $newItinerary[$index]['keterangan'] = $template->keterangan;
-                $newItinerary[$index]['waktu_mulai'] = $waktuMulai;
-                $newItinerary[$index]['waktu_selesai'] = $waktuSelesai->toDateTimeString();
+                $newItinerary[$index]['estimasi'] = $template->estimasi;
+                $newItinerary[$index]['tanggal_mulai'] = $tanggalMulai;
+                $newItinerary[$index]['jam_mulai'] = $jamMulai;
+                $newItinerary[$index]['tanggal_selesai'] = $tanggalSelesai;
+                $newItinerary[$index]['jam_selesai'] = $jamSelesai;
                 $newItinerary[$index]['paket_umroh_id'] = 0;
                 $newItinerary[$index]['user_id'] = 0;
             }
