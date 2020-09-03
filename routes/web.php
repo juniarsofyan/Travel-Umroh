@@ -108,6 +108,8 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::resource('jamaah', 'JamaahController');
 
+    Route::resource('transaksi', 'TransaksiController');
+
     Route::resource('template-itinerary', 'TemplateItineraryController')->except([
         'show'
     ]);

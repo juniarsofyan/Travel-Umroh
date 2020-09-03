@@ -191,7 +191,7 @@
                 </li>
             @endcan
 
-            {{-- @canany(['Transaksi View', 'Pembayaran View'])
+            @canany(['Transaksi View', 'Pembayaran View'])
             <li class="treeview">
                 <a href="#">
                     <span>Transaksi</span>
@@ -214,7 +214,7 @@
                     @endcan
                 </ul>
             </li>
-            @endcan --}}
+            @endcan
 
             {{-- 
             @can('Category View')
