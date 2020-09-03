@@ -10,7 +10,6 @@ class PaketUmroh extends Model
 
     protected $fillable = [
         'nama_paket',
-        'tanggal',
         'jumlah_hari', 
         'jumlah_orang', 
         'harga', 
@@ -18,23 +17,12 @@ class PaketUmroh extends Model
         'hotel_makkah', 
         'hotel_madinah', 
         'maskapai_id', 
-        'jenis_kamar_id', 
         'user_id'
     ];
-
-    public function itinerary()
-    {
-        return $this->hasMany(ItineraryPaketUmroh::class);
-    }
 
     public function maskapai()
     {
         return $this->belongsToMany(Maskapai::class, 'paket_umroh', 'maskapai_id');
-    }
-    
-    public function jenisKamar()
-    {
-        return $this->belongsToMany(JenisKamar::class, 'paket_umroh', 'jenis_kamar_id');
     }
     
     public function hotelMakkah()

@@ -11,6 +11,7 @@ use App\TemplateItinerary;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PaketUmrohController extends Controller
 {
@@ -23,24 +24,15 @@ class PaketUmrohController extends Controller
     {
         // $daftarPaketUmroh = PaketUmroh::get();
 
-        $daftarPaketUmroh = PaketUmroh::with(
-            [
-                'maskapai' => function($maskapai) {
-                    $maskapai->select('kode_maskapai', 'maskapai.nama');
-                },
-                'jenisKamar' => function($address) {
-                    $address->select('jenis_kamar.nama');
-                },
-                'hotelMakkah' => function($address) {
-                    $address->select('hotel.nama');
-                },
-                'hotelMadinah' => function($address) {
-                    $address->select('hotel.nama');
-                }
-            ]
-        )->get();
+        $sql = "SELECT 
+                    paket_umroh.id, nama_paket, jumlah_hari, jumlah_orang, harga, hotel_makkah.nama as hotel_makkah, hotel_madinah.nama as hotel_madinah, maskapai.nama as maskapai, deskripsi 
+                FROM 
+                    paket_umroh 
+                inner join maskapai on paket_umroh.maskapai_id = maskapai.id 
+                inner join hotel as hotel_makkah on paket_umroh.hotel_makkah = hotel_makkah.id 
+                inner join hotel as hotel_madinah on paket_umroh.hotel_madinah = hotel_madinah.id";
 
-        // print_r($daftarPaketUmroh);exit();
+        $daftarPaketUmroh = DB::select($sql);
 
         return view('paket_umroh.index', compact('daftarPaketUmroh'));
     }
@@ -55,10 +47,7 @@ class PaketUmrohController extends Controller
         $daftarHotelMakkah = Hotel::where('lokasi', 'Makkah')->get();
         $daftarHotelMadinah = Hotel::where('lokasi', 'Madinah')->get();
         $daftarMaskapai = Maskapai::all();
-        $daftarJenisKamar = JenisKamar::all();
-        $daftarTemplateItinerary = TemplateItinerary::all(); // where('tanggal', '>', Carbon::now())->get();
-        $daftarJadwalPenerbangan = JadwalPenerbangan::all();
-        return view('paket_umroh.create', compact('daftarTemplateItinerary', 'daftarJadwalPenerbangan', 'daftarHotelMakkah', 'daftarHotelMadinah', 'daftarMaskapai', 'daftarJenisKamar'));
+        return view('paket_umroh.create', compact('daftarHotelMakkah', 'daftarHotelMadinah', 'daftarMaskapai'));
     }
 
     /**
@@ -71,7 +60,6 @@ class PaketUmrohController extends Controller
     {
         $this->validate($request, [
             'nama_paket' => 'required|string',
-            'tanggal' => 'required|date',
             'jumlah_hari' => 'required|integer',
             'jumlah_orang' => 'required|string',
             'harga' => 'required|integer',
@@ -79,25 +67,20 @@ class PaketUmrohController extends Controller
             'hotel_makkah' => 'required|integer',
             'hotel_madinah' => 'required|integer',
             'maskapai' => 'required|integer',
-            'jenis_kamar' => 'required|integer',
         ]);
 
         try {
             $paketUmroh = PaketUmroh::create([
                 'nama_paket' => $request->nama_paket,
-                'tanggal' => $request->tanggal,
                 'jumlah_hari' => $request->jumlah_hari,
                 'jumlah_orang' => $request->jumlah_orang,
                 'harga' => $request->harga,
                 'hotel_makkah' => $request->hotel_makkah,
                 'hotel_madinah' => $request->hotel_madinah,
                 'maskapai_id' => $request->maskapai,
-                'jenis_kamar_id' => $request->jenis_kamar,
                 'deskripsi' => $request->deskripsi,
                 'user_id' => Auth::user()->id
             ]);
-
-            $paketUmroh->itinerary()->createMany($request->events);
 
             return redirect()->route('paket-umroh.index')->with(['success' => 'Paket Umroh: <b>' . $paketUmroh->nama_paket . '</b> ditambahkan']);
         } catch (\Exception $e) {
@@ -123,9 +106,12 @@ class PaketUmrohController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(PaketUmroh $paketUmroh)
     {
-        //
+        $daftarHotelMakkah = Hotel::where('lokasi', 'Makkah')->get();
+        $daftarHotelMadinah = Hotel::where('lokasi', 'Madinah')->get();
+        $daftarMaskapai = Maskapai::all();
+        return view('paket_umroh.edit', compact('paketUmroh', 'daftarHotelMakkah', 'daftarHotelMadinah', 'daftarMaskapai'));
     }
 
     /**
@@ -135,9 +121,39 @@ class PaketUmrohController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, PaketUmroh $paketUmroh)
     {
-        //
+        $this->validate($request, [
+            'nama_paket' => 'required|string',
+            'jumlah_hari' => 'required|integer',
+            'jumlah_orang' => 'required|string',
+            'harga' => 'required|integer',
+            'deskripsi' => 'required|string',
+            'hotel_makkah' => 'required|integer',
+            'hotel_madinah' => 'required|integer',
+            'maskapai' => 'required|integer',
+        ]);
+
+        try {
+            //update data
+            $paketUmroh->update([
+                'nama_paket' => $request->nama_paket,
+                'jumlah_hari' => $request->jumlah_hari,
+                'jumlah_orang' => $request->jumlah_orang,
+                'harga' => $request->harga,
+                'hotel_makkah' => $request->hotel_makkah,
+                'hotel_madinah' => $request->hotel_madinah,
+                'maskapai_id' => $request->maskapai,
+                'deskripsi' => $request->deskripsi,
+                'user_id' => Auth::user()->id
+            ]);
+
+            //redirect ke route kategori.index
+            return redirect(route('paket-umroh.index'))->with(['success' => 'Paket Umroh ' . $paketUmroh->nama_paket . ' diubah']);
+        } catch (\Exception $e) {
+            //jika gagal, redirect ke form yang sama lalu membuat flash message error
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
     }
 
     /**
@@ -146,9 +162,10 @@ class PaketUmrohController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(PaketUmroh $paketUmroh)
     {
-        //
+        $paketUmroh->delete();
+        return redirect()->back()->with(['success' => 'Paket Umroh: ' . $paketUmroh->nama_paket . " telah dihapus!"]);
     }
 
     public function generateItinerary($jadwalPenerbanganId, $templateItineraryId)

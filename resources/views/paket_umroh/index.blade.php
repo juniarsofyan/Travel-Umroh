@@ -49,14 +49,13 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Paket Umroh</th>
-                                    <th>Tanggal</th>
                                     <th>Jumlah Hari</th>
                                     <th>Jumlah Orang</th>
                                     <th>Maskapai</th>
                                     <th>Hotel Makkah</th>
                                     <th>Hotel Madinah</th>
-                                    <th>Tipe Kamar</th>
                                     <th>Harga</th>
+                                    <th>Opsi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -66,13 +65,11 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->nama_paket }} </td>
-                                        <td>{{ $row->tanggal }} </td>
                                         <td>{{ $row->jumlah_hari }} </td>
                                         <td>{{ $row->jumlah_orang }} </td>
                                         <td>{{ $row->maskapai }} </td>
                                         <td>{{ $row->hotel_makkah }} </td>
                                         <td>{{ $row->hotel_madinah }} </td>
-                                        <td>{{ $row->jenis_kamar }} </td>
                                         <td>{{ $row->harga }} </td>
                                         <td>
                                             <form action="{{ route('paket-umroh.destroy', $row->id) }}" method="POST">

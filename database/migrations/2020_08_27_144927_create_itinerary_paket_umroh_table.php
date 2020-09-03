@@ -17,12 +17,14 @@ class CreateItineraryPaketUmrohTable extends Migration
             $table->bigIncrements('id');
             $table->integer('hari_ke');
             $table->string('kegiatan');
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->date('tanggal_mulai');
             $table->time('jam_mulai');
             $table->date('tanggal_selesai');
             $table->time('jam_selesai');
             $table->integer('paket_umroh_id');
+            $table->integer('jamaah_id');
+            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }
