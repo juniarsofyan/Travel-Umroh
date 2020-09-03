@@ -185,6 +185,37 @@
             </li>
             @endcan
 
+            @can('Jamaah View')
+                <li>
+                    <a href="{{ route('jamaah.index') }}"> <span>Jamaah</span></a>
+                </li>
+            @endcan
+
+            {{-- @canany(['Transaksi View', 'Pembayaran View'])
+            <li class="treeview">
+                <a href="#">
+                    <span>Transaksi</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+
+                <ul class="treeview-menu">
+                    @can('Transaksi View')
+                    <li class="{{ (request()->routeIs('transaksi.index')) ? 'active' : '' }}">
+                        <a href="{{ route('transaksi.index') }}"><i class="fa fa-circle-o"></i>Transaksi</a>
+                    </li>
+                    @endcan
+
+                    @can('Pembayaran View')
+                    <li class="{{ (request()->routeIs('pembayaran.index')) ? 'active' : '' }}">
+                        <a href="{{ route('pembayaran.index') }}"><i class="fa fa-circle-o"></i>Pembayaran</a>
+                    </li>
+                    @endcan
+                </ul>
+            </li>
+            @endcan --}}
+
             {{-- 
             @can('Category View')
             <li class="treeview {{ (request()->routeIs('category*')) ? 'active' : '' }}">

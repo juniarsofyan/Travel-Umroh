@@ -106,6 +106,8 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::resource('paket-umroh', 'PaketUmrohController');
 
+    Route::resource('jamaah', 'JamaahController');
+
     Route::resource('template-itinerary', 'TemplateItineraryController')->except([
         'show'
     ]);
