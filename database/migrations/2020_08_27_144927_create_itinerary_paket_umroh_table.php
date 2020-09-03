@@ -24,7 +24,6 @@ class CreateItineraryPaketUmrohTable extends Migration
             $table->time('jam_selesai');
             $table->integer('paket_umroh_id');
             $table->integer('jamaah_id');
-            $table->integer('user_id')->nullable();
             $table->timestamps();
         });
     }
