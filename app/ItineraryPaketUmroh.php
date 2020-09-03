@@ -18,5 +18,6 @@ class ItineraryPaketUmroh extends Model
         'jam_selesai', 
         'paket_umroh_id', 
         'jamaah_id', 
+        'transaksi_id', 
     ];
 }

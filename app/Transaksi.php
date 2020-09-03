@@ -20,6 +20,11 @@ class Transaksi extends Model
         'user_id', 
     ];
 
+    public function itinerary()
+    {
+        return $this->hasMany(ItineraryPaketUmroh::class);
+    }
+
     public function paketUmroh()
     {
         // almost correct

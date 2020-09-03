@@ -11,6 +11,7 @@ use App\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PhpParser\Node\Stmt\Foreach_;
 
 class TransaksiController extends Controller
 {
@@ -88,8 +89,24 @@ class TransaksiController extends Controller
 
             // $transaksi->itinerary()->createMany($request->events);
 
+            foreach ($request->events as $kegiatan) {
+                $kegiatan['paket_umroh_id'] = $request->paket_umroh;
+                $kegiatan['jamaah_id'] = $request->jamaah;
+                $kegiatan['user_id'] = Auth::user()->id;
+                $kegiatan['transaksi_id'] = $transaksi->id;
+                
+                $transaksi->itinerary()->create($kegiatan);
+
+                // echo "<pre>";
+                // print_r($kegiatan);
+                // echo "</pre>";
+            }
+
+            // exit();
+
             return redirect()->route('transaksi.index')->with(['success' => 'Transaksi ditambahkan']);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }
     }
@@ -166,6 +183,7 @@ class TransaksiController extends Controller
      */
     public function destroy(Transaksi $transaksi)
     {
+        $transaksi->itinerary()->delete();
         $transaksi->delete();
         return redirect()->back()->with(['success' => 'Transaksi telah dihapus!']);        
     }
