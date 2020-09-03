@@ -20,11 +20,11 @@ class CreatePaketUmrohTable extends Migration
             $table->integer('jumlah_hari');
             $table->integer('jumlah_orang');
             $table->integer('harga');
-            $table->text('deskripsi');
             $table->integer('hotel_makkah');
             $table->integer('hotel_madinah');
             $table->integer('maskapai_id');
             $table->integer('jenis_kamar_id');
+            $table->text('deskripsi');
             $table->integer('user_id');
             $table->timestamps();
         });

@@ -15,14 +15,14 @@ class CreateItineraryPaketUmrohTable extends Migration
     {
         Schema::create('itinerary_paket_umroh', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('tanggal');
             $table->integer('hari_ke');
             $table->string('kegiatan');
             $table->string('keterangan');
-            $table->time('waktu_mulai');
-            $table->time('waktu_selesai');
+            $table->date('tanggal_mulai');
+            $table->time('jam_mulai');
+            $table->date('tanggal_selesai');
+            $table->time('jam_selesai');
             $table->integer('paket_umroh_id');
-            $table->integer('user_id');
             $table->timestamps();
         });
     }

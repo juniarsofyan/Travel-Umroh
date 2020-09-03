@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-    <title>Manajemen Petugas</title>
+    <title>Manajemen Paket Umroh</title>
 @endsection
 
 @section('styles')
@@ -16,10 +16,10 @@
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
-        <h1> Manajemen Petugas </h1>
+        <h1> Manajemen Paket Umroh </h1>
         <ol class="breadcrumb">
-            <li><a href="#">Home</a></li>
-            <li class="active">Petugas</li>
+            <li><a href="{{ route('dashboard.index') }}">Home</a></li>
+            <li class="active">Paket Umroh</li>
         </ol>
     </section>
 
@@ -30,11 +30,14 @@
             <div class="col-md-12">
                 <div class="box">
                     <div class="box-header">
-                        <h3 class="box-title">List Petugas</h3>
+                        <h3 class="box-title">Daftar Paket Umroh</h3>
+                        <div class="pull-left box-tools">
+                            <a href="{{ route('paket-umroh.create') }}" class="btn btn-primary"><i class="fa fa-plus"></i>&nbsp;&nbsp;Tambah Paket Umroh</a>
+                        </div>
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-
+                        <br/>
                         @if (session('success'))
                             @alert(['type' => 'success'])
                                 {!! session('success') !!}
@@ -45,39 +48,44 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Nama</th>
-                                    <th>Tanggal Lahir</th>
-                                    <th>Jenis Kelamin</th>
-                                    <th>Telepon</th>
-                                    <th>E-mail</th>
-                                    <th>Alamat</th>
-                                    <th>Opsi</th>
+                                    <th>Paket Umroh</th>
+                                    <th>Tanggal</th>
+                                    <th>Jumlah Hari</th>
+                                    <th>Jumlah Orang</th>
+                                    <th>Maskapai</th>
+                                    <th>Hotel Makkah</th>
+                                    <th>Hotel Madinah</th>
+                                    <th>Tipe Kamar</th>
+                                    <th>Harga</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                                 @php $no = 1; @endphp
-                                @forelse ($officers as $row)
+                                @forelse ($daftarPaketUmroh as $row)
                                     <tr>
                                         <td>{{ $no++ }}</td>
-                                        <td>{{ $row->name }} </td>
-                                        <td>{{ $row->birthdate }} </td>
-                                        <td>{{ $row->gender }} </td>
-                                        <td>{{ $row->phone }} </td>
-                                        <td>{{ $row->email }} </td>
-                                        <td>{{ str_limit($row->address, 50) }} </td>
+                                        <td>{{ $row->nama_paket }} </td>
+                                        <td>{{ $row->tanggal }} </td>
+                                        <td>{{ $row->jumlah_hari }} </td>
+                                        <td>{{ $row->jumlah_orang }} </td>
+                                        <td>{{ $row->maskapai }} </td>
+                                        <td>{{ $row->hotel_makkah }} </td>
+                                        <td>{{ $row->hotel_madinah }} </td>
+                                        <td>{{ $row->jenis_kamar }} </td>
+                                        <td>{{ $row->harga }} </td>
                                         <td>
-                                            <form action="{{ route('officer.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('paket-umroh.destroy', $row->id) }}" method="POST">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
-                                                <a href="{{ route('officer.edit', $row->id) }}" class="btn btn-warning btn-sm"><i class="fa fa-edit"></i></a>
-                                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
+                                                <a href="{{ route('paket-umroh.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
+                                                <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></button>
                                             </form>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="8" class="text-center">Tidak ada data</td>
+                                        <td colspan="4" class="text-center">Tidak ada data</td>
                                     </tr>
                                 @endforelse
 

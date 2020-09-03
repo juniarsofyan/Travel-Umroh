@@ -12,9 +12,10 @@ class ItineraryPaketUmroh extends Model
         'hari_ke', 
         'kegiatan', 
         'keterangan', 
-        'waktu_mulai', 
-        'waktu_selesai', 
-        'paket_umroh_id', 
-        'user_id'
+        'tanggal_mulai', 
+        'jam_mulai', 
+        'tanggal_selesai', 
+        'jam_selesai', 
+        'paket_umroh_id'
     ];
 }
