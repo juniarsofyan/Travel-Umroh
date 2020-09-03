@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
         $this->call(TemplateItineraryPermissionSeeder::class);
         $this->call(PaketUmrohPermissionSeeder::class);
         $this->call(JadwalPenerbanganPermissionSeeder::class);
+        $this->call(JamaahPermissionSeeder::class);
+        $this->call(TransaksiPermissionSeeder::class);
         $this->call(SyncAllPermissionsSeeder::class);
     }
 }
