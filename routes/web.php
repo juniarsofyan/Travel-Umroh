@@ -118,6 +118,10 @@ Route::group(['middleware' => ['auth']], function () {
         'show'
     ]);
 
+    Route::resource('pembayaran', 'PembayaranController')->except([
+        'show'
+    ]);
+
     Route::livewire('itinerary-templates/create', 'itinerary.create-itinerary-template')->name('itinerary-templates.create');
     Route::resource('itinerary-templates', 'ItineraryTemplateController')->except([
         'create'
