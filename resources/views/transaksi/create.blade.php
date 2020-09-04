@@ -54,6 +54,11 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label for="nomor_transaksi">Nomor Transaksi</label>
+                                    <input type="text" name="nomor_transaksi" class="form-control {{ $errors->has('nomor_transaksi') ? 'is-invalid':'' }}" id="nomor_transaksi" required>
+                                </div>
+
+                                <div class="form-group">
                                     <label for="jamaah">Jamaah</label>
                                     <select name="jamaah" id="jamaah" class="form-control" required>
                                         <option value="" selected disabled>-- PILIH SATU --</option>

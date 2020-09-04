@@ -25,6 +25,7 @@ class TransaksiController extends Controller
         $sql = "SELECT
                     transaksi.id,
                     tanggal_transaksi,
+                    nomor_transaksi,
                     jamaah.nama as jamaah,
                     paket_umroh.nama_paket as paket_umroh,
                     jenis_kamar.nama as jenis_kamar, 
@@ -66,6 +67,7 @@ class TransaksiController extends Controller
     {
         $this->validate($request, [
             'tanggal_transaksi' => 'required|date',
+            'nomor_transaksi' => 'string',
             'jamaah' => 'required|integer',
             'paket_umroh' => 'required|integer',
             'jenis_kamar' => 'required|integer',
@@ -77,6 +79,7 @@ class TransaksiController extends Controller
         try {
             $transaksi = Transaksi::create([
                 'tanggal_transaksi' => $request->tanggal_transaksi,
+                'nomor_transaksi' => $request->nomor_transaksi,
                 'jamaah_id' => $request->jamaah,
                 'paket_umroh_id' => $request->paket_umroh,
                 'jenis_kamar_id' => $request->jenis_kamar,
@@ -135,7 +138,14 @@ class TransaksiController extends Controller
         $daftarJenisKamar = JenisKamar::all();
         $daftarJadwalPenerbangan = JadwalPenerbangan::all();
         $daftarTemplateItinerary = TemplateItinerary::all();
-        return view('transaksi.edit', compact('transaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
+        $itinerary = $transaksi->itinerary()->get();
+
+        /* echo "<pre>";
+        print_r($itinerary);
+        echo "<pre>";
+        exit(); */
+
+        return view('transaksi.edit', compact('itinerary', 'transaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
     }
 
     /**
@@ -149,6 +159,39 @@ class TransaksiController extends Controller
     {
         $this->validate($request, [
             'tanggal_transaksi' => 'required|date',
+            'nomor_transaksi' => 'required|string',
+            'jamaah' => 'required|integer',
+            'paket_umroh' => 'required|integer',
+            'jenis_kamar' => 'required|integer',
+            'jadwal_penerbangan' => 'required|integer',
+            'template_itinerary' => 'required|integer',
+            'deskripsi' => 'string',
+        ]);
+
+        try {
+            $transaksi->update([
+                'tanggal_transaksi' => $request->tanggal_transaksi,
+                'nomor_transaksi' => $request->nomor_transaksi,
+                'jamaah_id' => $request->jamaah,
+                'paket_umroh_id' => $request->paket_umroh,
+                'jenis_kamar_id' => $request->jenis_kamar,
+                'jadwal_penerbangan_id' => $request->jadwal_penerbangan,
+                'template_itinerary_id' => $request->template_itinerary,
+                'deskripsi' => $request->deskripsi,
+                'user_id' => Auth::user()->id
+            ]);
+
+            return redirect()->route('transaksi.index')->with(['success' => 'Transaksi ditambahkan']);
+        } catch (\Exception $e) {
+            return redirect()->back()->with(['error' => $e->getMessage()]);
+        }
+
+
+        // ----------------------------------------------- 
+
+        $this->validate($request, [
+            'tanggal_transaksi' => 'required|date',
+            'nomor_transaksi' => 'required|string',
             'jamaah' => 'required|integer',
             'paket_umroh' => 'required|integer',
             'jenis_kamar' => 'required|integer',
@@ -169,8 +212,20 @@ class TransaksiController extends Controller
                 'user_id' => Auth::user()->id
             ]);
 
+            $transaksi->itinerary()->delete($request->events);
+
+            foreach ($request->events as $kegiatan) {
+                $kegiatan['paket_umroh_id'] = $request->paket_umroh;
+                $kegiatan['jamaah_id'] = $request->jamaah;
+                $kegiatan['user_id'] = Auth::user()->id;
+                $kegiatan['transaksi_id'] = $transaksi->id;
+                
+                $transaksi->itinerary()->create($kegiatan);
+            }
+
             return redirect()->route('transaksi.index')->with(['success' => 'Transaksi ditambahkan']);
         } catch (\Exception $e) {
+            dd($e->getMessage());
             return redirect()->back()->with(['error' => $e->getMessage()]);
         }
     }
@@ -185,6 +240,6 @@ class TransaksiController extends Controller
     {
         $transaksi->itinerary()->delete();
         $transaksi->delete();
-        return redirect()->back()->with(['success' => 'Transaksi telah dihapus!']);        
+        return redirect()->back()->with(['success' => 'Transaksi telah dihapus!']);
     }
 }

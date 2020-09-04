@@ -49,6 +49,7 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Tanggal Transaksi</th>
+                                    <th>Nomor Transaksi</th>
                                     <th>Jamaah</th>
                                     <th>Paket Umroh</th>
                                     <th>Tipe Kamar</th>
@@ -63,6 +64,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->tanggal_transaksi }} </td>
+                                        <td>{{ $row->nomor_transaksi }} </td>
                                         <td>{{ $row->jamaah }} </td>
                                         <td>{{ $row->paket_umroh }} </td>
                                         <td>{{ $row->jenis_kamar }} </td>
