@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
         $this->call(JadwalPenerbanganPermissionSeeder::class);
         $this->call(JamaahPermissionSeeder::class);
         $this->call(TransaksiPermissionSeeder::class);
-        $this->call(PembayaranPermissionSeeder::class);
+        $this->call(PembayaranPermissionsSeeder::class);
         $this->call(SyncAllPermissionsSeeder::class);
     }
 }
