@@ -140,11 +140,6 @@ class TransaksiController extends Controller
         $daftarTemplateItinerary = TemplateItinerary::all();
         $itinerary = $transaksi->itinerary()->get();
 
-        /* echo "<pre>";
-        print_r($itinerary);
-        echo "<pre>";
-        exit(); */
-
         return view('transaksi.edit', compact('itinerary', 'transaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
     }
 
@@ -157,7 +152,7 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, Transaksi $transaksi)
     {
-        $this->validate($request, [
+        /* $this->validate($request, [
             'tanggal_transaksi' => 'required|date',
             'nomor_transaksi' => 'required|string',
             'jamaah' => 'required|integer',
@@ -184,7 +179,7 @@ class TransaksiController extends Controller
             return redirect()->route('transaksi.index')->with(['success' => 'Transaksi ditambahkan']);
         } catch (\Exception $e) {
             return redirect()->back()->with(['error' => $e->getMessage()]);
-        }
+        } */
 
 
         // ----------------------------------------------- 

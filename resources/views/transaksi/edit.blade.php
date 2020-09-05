@@ -20,6 +20,11 @@
 
     <!-- Main content -->
     <section class="content">
+        <!-- form start -->
+        <form role="form" action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
+            @csrf
+            <input type="hidden" name="_method" value="PUT">
+
         <div class="row">
             <!-- left column -->
             <div class="col-md-12">
@@ -30,10 +35,6 @@
                     </div>
                     <!-- /.box-header -->
 
-                    <!-- form start -->
-                    <form role="form" action="{{ route('transaksi.update', $transaksi->id) }}" method="POST">
-                        @csrf
-                        <input type="hidden" name="_method" value="PUT">
                         <div class="box-body">
 
                             {{-- IF SOMETHING WRONG HAPPENED --}}
@@ -116,11 +117,10 @@
                         </div>
                         <!-- /.box-body -->
 
-                        <div class="box-footer">
+                        {{-- <div class="box-footer">
                             <button type="reset" class="btn btn-default">Batal</button> &nbsp;&nbsp;
                             <button type="submit" class="btn btn-primary">Ubah</button>
-                        </div>
-                    </form>
+                        </div> --}}
                 </div>
                 <!-- /.box -->
 
@@ -128,9 +128,142 @@
             <!--/.col (left) -->
         </div>
         <!-- /.row -->
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-success">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Jadwal Kegiatan</h3>
+                    </div>
+                    <div class="box-body" id="itinerary-list">
+
+                            <table id="itinerary-table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Hari ke</th>
+                                        <th>Tanggal Kegiatan</th>
+                                        <th>Kegiatan</th>
+                                        <th>Keterangan</th>
+                                        <th>Jam Mulai</th>
+                                        <th>Jam Selesai</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="event-list">
+                                    @php $no = 1; @endphp
+                                    @foreach ($itinerary as $item)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td><input type="hidden" name="events[{{ $no++ }}][hari_ke]" value={{ $item->hari_ke }}"/> {{ $item->hari_ke }}</td>
+                                            <td> 
+                                                <input type="hidden" name="events[{{ $no++ }}][tanggal_mulai]" value={{ $item->tanggal_mulai }}"/>
+                                                <input type="hidden" name="events[{{ $no++ }}][tanggal_selesai]" value={{ $item->tanggal_selesai }}"/> 
+                                                {{ $item->tanggal_mulai }}
+                                            </td>
+                                            <td> <input type="hidden" name="events[{{ $no++ }}][kegiatan]" value="{{ $item->kegiatan }}"/> {{ $item->kegiatan }}</td>
+                                            <td> <input type="hidden" name="events[{{ $no++ }}][keterangan]" value="{{ $item->keterangan }}"/> {{ $item->keterangan }}</td>
+                                            <td> <input type="text" name="events[{{ $no++ }}][jam_mulai]" value="{{ $item->jam_mulai }}" class="form-control"/> </td> 
+                                            <td> <input type="text" name="events[{{ $no++ }}][jam_selesai]" value="{{ $item->jam_selesai }}" class="form-control"/> </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                    </div>
+                    <div class="box-footer">
+                        <button type="reset" class="btn btn-default">Batal</button> &nbsp;&nbsp;
+                        <button type="submit" class="btn btn-primary">Ubah</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.row -->
+    </form>
     </section>
     <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
+@endsection
+
+
+@section('scripts')
+     <!-- DataTables -->
+     <script src="{{ asset('bower_components/datatables.net/js/jquery.dataTables.min.js') }}"></script>
+     <script src="{{ asset('bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/dataTables.buttons.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/buttons.flash.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/jszip.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/pdfmake.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/vfs_fonts.js') }}"></script>
+     <script src="{{ asset('js/plugins/buttons.html5.min.js') }}"></script>
+     <script src="{{ asset('js/plugins/buttons.print.min.js') }}"></script>
+     <script src="{{ asset('js/datatable.js') }}"></script>
+     
+    <script>
+        $(function() {
+            $('#itinerary-table').DataTable( {
+                dom: 'Bfrtip',
+                buttons: [
+                    'print'
+                ]
+            });
+
+            $('select[name=jadwal_penerbangan]').change(function() {
+                generateItinerary();
+            });
+
+            $('select[name=template_itinerary]').change(function() {
+                generateItinerary();
+            });
+
+            
+        });
+
+        function generateItinerary() {
+                
+                let jadwalPenerbangan = $('select[name=jadwal_penerbangan]').val();
+                let templateItinerary = $('select[name=template_itinerary]').val();
+
+                if (jadwalPenerbangan && templateItinerary) {
+                    $.ajax({
+                        url: '{{ env('APP_API_URL') }}paket-umroh/generate-itinerary/' + jadwalPenerbangan + '/' + templateItinerary,
+                        type: 'GET',
+                        headers: {
+                            // 'Access-Control-Allow-Origin': '*',
+                        },
+                        crossDomain: true,
+                        dataType: 'json',
+                        success: function(result) {
+
+                            var newElementIndex = 0;
+
+                            // console.log(result);
+
+                            $("tbody[id=event-list]").empty();
+
+                            result.forEach(item => {
+                                var newElement = `<tr> <td>${newElementIndex + 1}</td> <td> <input type='hidden' name='events[${newElementIndex}][hari_ke]' value='${item.hari_ke}'/> ${item.hari_ke} </td> <td> <input type='hidden' name='events[${newElementIndex}][tanggal_mulai]' value='${item.tanggal_mulai}'/> <input type='hidden' name='events[${newElementIndex}][tanggal_selesai]' value='${item.tanggal_selesai}'/> ${item.tanggal_mulai} </td> <td> <input type='hidden' name='events[${newElementIndex}][kegiatan]' value='${item.kegiatan}'/> ${item.kegiatan} </td> <td> <input type='hidden' name='events[${newElementIndex}][keterangan]' value='${item.keterangan}'/> ${item.keterangan} </td> <td> <input type='hidden' name='events[${newElementIndex}][tanggal]' value='${item.estimasi}'/> ${item.estimasi} jam </td> <td> <input type='text' name='events[${newElementIndex}][jam_mulai]' value='${item.jam_mulai}' class='form-control'/> </td> <td> <input type='text' name='events[${newElementIndex}][jam_selesai]' value='${item.jam_selesai}' class='form-control'/> </td> </tr>`;
+                                $("tbody[id=event-list]").append(newElement);
+                                newElementIndex++;
+                            });
+
+                            
+                            
+
+
+                            /* var select = $('select[name=kota]');
+
+                            select.empty();
+
+                            select.append('<option selected disabled>-- Pilih Kota --</option>');
+
+                            $.each(result.data,function(key, value) {
+                                select.append('<option value=' + value.city_id + '>' + value.city_name + '</option>');
+                            }); */
+                        }
+                    });
+                }
+            }
+    </script>
 @endsection
