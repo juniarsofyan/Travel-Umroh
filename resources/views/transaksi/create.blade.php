@@ -55,7 +55,7 @@
 
                                 <div class="form-group">
                                     <label for="nomor_transaksi">Nomor Transaksi</label>
-                                    <input type="text" name="nomor_transaksi" class="form-control {{ $errors->has('nomor_transaksi') ? 'is-invalid':'' }}" id="nomor_transaksi" required>
+                                    <input type="text" name="nomor_transaksi" value="{{ $nomorTransaksi }}" class="form-control {{ $errors->has('nomor_transaksi') ? 'is-invalid':'' }}" id="nomor_transaksi" required>
                                 </div>
 
                                 <div class="form-group">

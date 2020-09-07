@@ -8,6 +8,7 @@ use App\JenisKamar;
 use App\PaketUmroh;
 use App\TemplateItinerary;
 use App\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -54,7 +55,9 @@ class TransaksiController extends Controller
         $daftarJenisKamar = JenisKamar::all();
         $daftarJadwalPenerbangan = JadwalPenerbangan::all();
         $daftarTemplateItinerary = TemplateItinerary::all();
-        return view('transaksi.create', compact('daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
+        $nomorTransaksi = $this->getTransactionNumber();
+
+        return view('transaksi.create', compact('nomorTransaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
     }
 
     /**
@@ -236,5 +239,21 @@ class TransaksiController extends Controller
         $transaksi->itinerary()->delete();
         $transaksi->delete();
         return redirect()->back()->with(['success' => 'Transaksi telah dihapus!']);
+    }
+
+    public function getTransactionNumber()
+    {
+        $monthNumberToAlphabet = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L');
+
+        $monthIndex = Carbon::now()->startOfMonth()->month;
+        $monthIndex = $monthIndex - 1;
+        $yearTwoDigit = Carbon::now()->format('y');
+
+        $lastTransactionNumber = Transaksi::select('nomor_transaksi')->orderBy('nomor_transaksi', 'DESC')->limit(1)->first()->nomor_transaksi;
+        $lastTransactionNumber = (($lastTransactionNumber) ? substr($lastTransactionNumber, -4) : '0000');
+        $nomorTransaksi = "ELT" . $yearTwoDigit . $monthNumberToAlphabet[$monthIndex] . $lastTransactionNumber;
+        $nomorTransaksi++;
+
+        return $nomorTransaksi;
     }
 }
