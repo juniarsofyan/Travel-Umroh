@@ -4,6 +4,10 @@
 <title>Manajemen Paket Umroh</title>
 @endsection
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}">
+@endsection
+
 @section('content')
 
 <!-- Content Wrapper. Contains page content -->
@@ -123,4 +127,18 @@
 </div>
 <!-- /.content-wrapper -->
 
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#hotel_makkah').chosen();
+            
+            $('#hotel_madinah').chosen();
+            
+            $('#maskapai').chosen();
+        });
+    </script>
 @endsection
