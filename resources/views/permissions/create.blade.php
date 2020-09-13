@@ -53,8 +53,8 @@
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <button type="reset" class="btn btn-default">Cancel</button> &nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button> &nbsp;&nbsp;
+                            <a href="{{ route('permission.index') }}" class="btn btn-default">Batal</a>
                         </div>
                     {!! Form::close() !!}
                 </div>

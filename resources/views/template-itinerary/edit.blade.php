@@ -126,10 +126,8 @@
                             
                         </div>
                         <div class="box-footer">
-                            {{-- <button wire:click="resetState" class="btn btn-default">Batal</button> &nbsp;&nbsp; --}}
-                            {{-- <button type="submit" class="btn btn-primary">Simpan Itinerary</button> --}}
-                            <button type="reset" class="btn btn-default">Batal</button> &nbsp;&nbsp;
-                            <button type="submit" class="btn btn-primary">Simpan</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button> &nbsp;&nbsp;
+                            <a href="{{ route('template-itinerary.index') }}" class="btn btn-default">Batal</a>
                         </div>
                     </div>
                 </div>
