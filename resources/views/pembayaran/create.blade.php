@@ -4,6 +4,10 @@
 <title>Manajemen Pembayaran</title>
 @endsection
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}">
+@endsection
+
 @section('content')
 
 <!-- Content Wrapper. Contains page content -->
@@ -48,24 +52,38 @@
 
                             <div class="form-group">
                                 <label for="tanggal_pembayaran">Tanggal Pembayaran</label>
-                                <input type="date" name="tanggal_pembayaran" class="form-control {{ $errors->has('tanggal_pembayaran') ? 'is-invalid':'' }}" id="tanggal_pembayaran" required>
+                                <input type="date" name="tanggal_pembayaran" class="form-control" value="{{ $tanggalSekarang }}" {{ $errors->has('tanggal_pembayaran') ? 'is-invalid':'' }}" id="tanggal_pembayaran" required>
                             </div>                            
                             <div class="form-group">
                                 <label for="transaksi">Nomor Transaksi</label>
                                 <select name="transaksi" id="transaksi" class="form-control" required>
                                     <option value="" selected disabled>-- PILIH SATU --</option>
                                     @foreach ($daftarTransaksi as $transaksi)
-                                    <option value="{{ $transaksi->id }}">{{ $transaksi->nomor_transaksi }} / {{ $transaksi->tanggal_transaksi }}</option>
+                                    <option value="{{ $transaksi->id }}">{{ $transaksi->nomor_transaksi }} / {{ $transaksi->jamaah->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
+                            
+                            <div class="form-group">
+                                <label for="jumlah_harus_dibayar">Jumlah harus dibayar</label>
+                                <input type="number" name="jumlah_harus_dibayar" class="form-control {{ $errors->has('jumlah_harus_dibayar') ? 'is-invalid':'' }}" id="jumlah_harus_dibayar" min="0" readonly required>
+                            </div>
+                            <div class="form-group">
+                                <label for="jumlah_terbayar">Jumlah terbayar</label>
+                                <input type="number" name="jumlah_terbayar" class="form-control {{ $errors->has('jumlah_terbayar') ? 'is-invalid':'' }}" id="jumlah_terbayar" min="0" readonly required>
+                            </div>
+                            <div class="form-group">
+                                <label for="sisa_pembayaran">Sisa pembayaran</label>
+                                <input type="number" name="sisa_pembayaran" class="form-control {{ $errors->has('sisa_pembayaran') ? 'is-invalid':'' }}" id="sisa_pembayaran" min="0" readonly required>
+                            </div>
+
                             <div class="form-group">
                                 <label for="pembayaran_ke">Pembayaran ke</label>
-                                <input type="number" name="pembayaran_ke" class="form-control {{ $errors->has('pembayaran_ke') ? 'is-invalid':'' }}" id="pembayaran_ke" required>
+                                <input type="number" name="pembayaran_ke" class="form-control {{ $errors->has('pembayaran_ke') ? 'is-invalid':'' }}" id="pembayaran_ke" min="0" readonly required>
                             </div>
                             <div class="form-group">
                                 <label for="nominal">Nominal</label>
-                                <input type="text" name="nominal" class="form-control {{ $errors->has('nominal') ? 'is-invalid':'' }}" id="nominal" required>
+                                <input type="number" name="nominal" class="form-control {{ $errors->has('nominal') ? 'is-invalid':'' }}" min="0" id="nominal" required>
                             </div>
                             <div class="form-group">
                                 <label for="keterangan">Keterangan</label>
@@ -93,4 +111,42 @@
 </div>
 <!-- /.content-wrapper -->
 
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
+
+    <script>
+        $(function() {
+            $('#transaksi').chosen();
+
+            $('select[name=transaksi]').change(function() {
+                getTerminBerikutnya();
+            });
+        });
+
+        function getTerminBerikutnya() {
+                
+            let transaksiId = $('select[name=transaksi]').val();
+
+            if (transaksiId) {
+                $.ajax({
+                    url: '{{ env('APP_API_URL') }}transaksi/' + transaksiId + '/termin',
+                    type: 'GET',
+                    headers: {
+                        // 'Access-Control-Allow-Origin': '*',
+                    },
+                    crossDomain: true,
+                    dataType: 'json',
+                    success: function(result) {
+                        $('input[name=jumlah_harus_dibayar]').val(result.jumlah_harus_dibayar);
+                        $('input[name=jumlah_terbayar]').val(result.jumlah_terbayar);
+                        $('input[name=sisa_pembayaran]').val(result.sisa_pembayaran);
+                        $('input[name=pembayaran_ke]').val(result.termin_berikutnya);
+                        $('input[name=nominal]').attr('max', result.sisa_pembayaran);
+                    }
+                });
+            }
+        }
+    </script>
 @endsection

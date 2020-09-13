@@ -30,6 +30,12 @@ class Transaksi extends Model
     {
         // almost correct
         // return $this->belongsToMany(PaketUmroh::class, 'transaksi', 'paket_umroh_id', 'paket_umroh_id', 'id');
+        return $this->belongsTo(PaketUmroh::class);
+    }
+
+    public function jamaah()
+    {
+        return $this->belongsTo(Jamaah::class);
     }
 
     public function jenisKamar()

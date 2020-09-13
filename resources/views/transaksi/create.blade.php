@@ -4,6 +4,10 @@
 <title>Manajemen Transaksi</title>
 @endsection
 
+@section('styles')
+<link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}">
+@endsection
+
 @section('content')
 
 <!-- Content Wrapper. Contains page content -->
@@ -50,7 +54,7 @@
 
                                 <div class="form-group">
                                     <label for="tanggal_transaksi">Tanggal Transaksi</label>
-                                    <input type="date" name="tanggal_transaksi" class="form-control {{ $errors->has('tanggal_transaksi') ? 'is-invalid':'' }}" id="tanggal_transaksi" required>
+                                    <input type="date" name="tanggal_transaksi" value="{{ $tanggalSekarang }}" class="form-control {{ $errors->has('tanggal_transaksi') ? 'is-invalid':'' }}" id="tanggal_transaksi" readonly required>
                                 </div>
 
                                 <div class="form-group">
@@ -58,9 +62,14 @@
                                     <input type="text" name="nomor_transaksi" value="{{ $nomorTransaksi }}" class="form-control {{ $errors->has('nomor_transaksi') ? 'is-invalid':'' }}" id="nomor_transaksi" required>
                                 </div>
 
+                                {{-- <div class="form-group">
+                                    <label for="jamaah">Jamaah</label>
+                                    <input type="text" name="jamaah" class="form-control {{ $errors->has('jamaah') ? 'is-invalid':'' }}" id="jamaah" required>
+                                </div> --}}
+
                                 <div class="form-group">
                                     <label for="jamaah">Jamaah</label>
-                                    <select name="jamaah" id="jamaah" class="form-control" required>
+                                    <select name="jamaah" id="jamaah" class="form-control">
                                         <option value="" selected disabled>-- PILIH SATU --</option>
                                         @foreach ($daftarJamaah as $jamaah)
                                             <option value="{{ $jamaah->id }}">{{ $jamaah->nama }}</option>
@@ -70,7 +79,7 @@
 
                                 <div class="form-group">
                                     <label for="paket_umroh">Paket Umroh</label>
-                                    <select name="paket_umroh" id="paket_umroh" class="form-control" required>
+                                    <select name="paket_umroh" id="paket_umroh" class="form-control">
                                         <option value="" selected disabled>-- PILIH SATU --</option>
                                         @foreach ($daftarPaketUmroh as $paketUmroh)
                                             <option value="{{ $paketUmroh->id }}">{{ $paketUmroh->nama_paket }}</option>
@@ -80,7 +89,7 @@
 
                                 <div class="form-group">
                                     <label for="jenis_kamar">Tipe Kamar</label>
-                                    <select name="jenis_kamar" id="jenis_kamar" class="form-control" required>
+                                    <select name="jenis_kamar" id="jenis_kamar" class="form-control">
                                         <option value="" selected disabled>-- PILIH SATU --</option>
                                         @foreach ($daftarJenisKamar as $jenisKamar)
                                             <option value="{{ $jenisKamar->id }}">{{ $jenisKamar->nama }} - {{ $jenisKamar->jumlah_orang }} orang</option>
@@ -90,7 +99,7 @@
 
                                 <div class="form-group">
                                     <label for="jadwal_penerbangan">Jadwal Penerbangan</label>
-                                    <select name="jadwal_penerbangan" id="jadwal_penerbangan" class="form-control" required>
+                                    <select name="jadwal_penerbangan" id="jadwal_penerbangan" class="form-control">
                                         <option value="" selected disabled>-- PILIH SATU --</option>
                                         @foreach ($daftarJadwalPenerbangan as $jadwalPenerbangan)
                                             <option value="{{ $jadwalPenerbangan->id }}">{{ $jadwalPenerbangan->tanggal }} / {{ $jadwalPenerbangan->bandara_takeoff }} / {{ $jadwalPenerbangan->nomor_pesawat }}</option>
@@ -100,7 +109,7 @@
 
                                 <div class="form-group">
                                     <label for="template_itinerary">Template Itinerary</label>
-                                    <select name="template_itinerary" id="template_itinerary" class="form-control" required>
+                                    <select name="template_itinerary" id="template_itinerary" class="form-control">
                                         <option value="" selected disabled>-- PILIH SATU --</option>
                                         @foreach ($daftarTemplateItinerary as $templateItinerary)
                                             <option value="{{ $templateItinerary->id }}">{{ $templateItinerary->kode_template }} - {{ $templateItinerary->jumlah_hari }}</option>
@@ -171,9 +180,21 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
+
     <script>
         $(function() {
-            $('select[name=jadwal_penerbangan]').change(function() {
+            $('#jamaah').chosen();
+
+            $('#paket_umroh').chosen();
+
+            $('#jenis_kamar').chosen();
+
+            $('#jadwal_penerbangan').chosen();
+
+            $('#template_itinerary').chosen();
+
+            $('select[name=template_itinerary]').change(function() {
                 generateItinerary();
             });
 
@@ -181,7 +202,7 @@
                 generateItinerary();
             });
 
-            
+            // $(selector).autocomplete(options);
         });
 
         function generateItinerary() {
@@ -211,20 +232,6 @@
                                 $("tbody[id=event-list]").append(newElement);
                                 newElementIndex++;
                             });
-
-                            
-                            
-
-
-                            /* var select = $('select[name=kota]');
-
-                            select.empty();
-
-                            select.append('<option selected disabled>-- Pilih Kota --</option>');
-
-                            $.each(result.data,function(key, value) {
-                                select.append('<option value=' + value.city_id + '>' + value.city_name + '</option>');
-                            }); */
                         }
                     });
                 }

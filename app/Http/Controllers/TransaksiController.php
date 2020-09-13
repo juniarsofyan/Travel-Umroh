@@ -56,8 +56,9 @@ class TransaksiController extends Controller
         $daftarJadwalPenerbangan = JadwalPenerbangan::all();
         $daftarTemplateItinerary = TemplateItinerary::all();
         $nomorTransaksi = $this->getTransactionNumber();
+        $tanggalSekarang = Carbon::now()->toDateString();
 
-        return view('transaksi.create', compact('nomorTransaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
+        return view('transaksi.create', compact('tanggalSekarang', 'nomorTransaksi', 'daftarJamaah', 'daftarPaketUmroh', 'daftarJenisKamar', 'daftarJadwalPenerbangan', 'daftarTemplateItinerary'));
     }
 
     /**

@@ -9,4 +9,9 @@ class Pembayaran extends Model
     protected $table = "pembayaran";
 
     protected $fillable = ["tanggal_pembayaran", "transaksi_id", "pembayaran_ke", "nominal", "keterangan", "user_id"];
+
+    public function transaksi()
+    {
+        return $this->belongsTo(Transaksi::class);
+    }
 }

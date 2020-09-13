@@ -18,3 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/paket-umroh/generate-itinerary/{jadwalPenerbangan}/{kodeTemplate}', 'PaketUmrohController@generateItinerary');
+
+Route::get('/transaksi/{transaksiId}/termin', 'PembayaranController@getTerminPembayaran');
+
+Route::get('/transaksi/belum-lunas', 'PembayaranController@getPembayaranBelumLunas');

@@ -63,7 +63,7 @@
                                     <tr>
                                         <td>{{ $no++ }}</td>
                                         <td>{{ $row->tanggal_pembayaran }} </td>
-                                        <td>{{ $row->nomor_transaksi }} </td>
+                                        <td>{{ $row->transaksi->nomor_transaksi }} </td>
                                         <td>{{ $row->pembayaran_ke }} </td>
                                         <td>{{ $row->nominal }} </td>
                                         <td>{{ $row->keterangan }} </td>

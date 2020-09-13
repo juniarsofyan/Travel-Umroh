@@ -52,9 +52,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="lokasi">Lokasi</label>
-                                <textarea name="lokasi" id="lokasi"
-                                    class="form-control {{ $errors->has('lokasi') ? 'is-invalid':'' }}" cols="5"
-                                    rows="5"></textarea>
+                                <select name="lokasi" id="lokasi" class="form-control" required>
+                                    <option value="" selected disabled>-- PILIH SATU --</option>
+                                    <option value="Makkah">Makkah</option>
+                                    <option value="Madinah">Madinah</option>
+                                </select>
                             </div>
                         </div>
                         <!-- /.box-body -->

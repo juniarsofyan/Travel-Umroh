@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Pembayaran;
 use App\Transaksi;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PembayaranController extends Controller
 {
@@ -16,7 +18,11 @@ class PembayaranController extends Controller
      */
     public function index()
     {
-        $daftarPembayaran = Pembayaran::orderBy('tanggal_pembayaran', 'ASC')->get();
+        $daftarPembayaran = Pembayaran::with([
+            'transaksi' => function($transaksi) {
+                $transaksi->select('id', 'nomor_transaksi');
+            }
+        ])->orderBy('tanggal_pembayaran', 'ASC')->get();
         return view('pembayaran.index', compact('daftarPembayaran'));
     }
 
@@ -27,8 +33,16 @@ class PembayaranController extends Controller
      */
     public function create()
     {
-        $daftarTransaksi = Transaksi::all();
-        return view('pembayaran.create', compact('daftarTransaksi'));
+        $tanggalSekarang = Carbon::now()->toDateString();
+
+        $daftarTransaksi = Transaksi::select('id', 'tanggal_transaksi', 'nomor_transaksi', 'jamaah_id')->with([
+            'jamaah' => function($jamaah) {
+                $jamaah->select('id', 'nama');
+            }
+        ])->where('status_transaksi', 'BELUM LUNAS')->get();
+
+        // $pembayaran = Pembayaran::with('transaksi')->with('transaksi.jamaah')->get();
+        return view('pembayaran.create', compact('tanggalSekarang', 'daftarTransaksi'));
     }
 
     /**
@@ -44,7 +58,6 @@ class PembayaranController extends Controller
             'transaksi' => 'required|integer',
             'pembayaran_ke' => 'required|integer',
             'nominal' => 'required|integer',
-            'keterangan' => 'string',
         ]);
 
         try {
@@ -56,6 +69,12 @@ class PembayaranController extends Controller
                 'keterangan' => $request->keterangan,
                 'user_id' => Auth::user()->id
             ]);
+
+            if ($request->nominal == $request->sisa_pembayaran) {
+                Transaksi::find($request->transaksi)->update([
+                    'status_transaksi' => 'LUNAS'
+                ]);
+            }
 
             return redirect()->route('pembayaran.index')->with(['success' => 'Pembayaran: ' . $pembayaran->nama . ' ditambahkan']);
         } catch (\Exception $e) {
@@ -85,5 +104,58 @@ class PembayaranController extends Controller
     {
         $pembayaran->delete();
         return redirect()->back()->with(['success' => 'Pembayaran telah dihapus!']);
+    }
+
+    public function getTerminPembayaran($transaksiId)
+    {
+        $terminTerakhir = Pembayaran::where('transaksi_id', $transaksiId)->count();
+
+        $terminBerikutnya = array('termin_berikutnya' => $terminTerakhir + 1);
+
+        // return response()->json($terminBerikutnya);
+        
+        $pembayaranTerakhir = DB::table('pembayaran')->select(DB::raw('COUNT(pembayaran_ke) AS jumlah_termin, SUM(nominal) AS jumlah_terbayar'))
+            ->where('transaksi_id', $transaksiId)
+            ->groupBy('transaksi_id')
+            ->first();
+
+        $hargaPaketUmroh = Transaksi::where('id', $transaksiId)
+                            ->with([
+                                'paketUmroh' => function ($paketUmroh) {
+                                    $paketUmroh->select('id', 'harga');
+                                }
+                            ])->first()->paketUmroh->harga;
+                            
+        $pembayaranBerikutnya = array();
+
+        if ($pembayaranTerakhir) {
+            $pembayaranBerikutnya = array(
+                'termin_berikutnya' => $pembayaranTerakhir->jumlah_termin + 1,
+                'jumlah_harus_dibayar' => $hargaPaketUmroh,
+                'jumlah_terbayar' => (int) $pembayaranTerakhir->jumlah_terbayar,
+                'sisa_pembayaran' => $hargaPaketUmroh - $pembayaranTerakhir->jumlah_terbayar
+            );
+        } else {
+            $pembayaranBerikutnya = array(
+                'termin_berikutnya' => 1,
+                'jumlah_harus_dibayar' => $hargaPaketUmroh,
+                'jumlah_terbayar' => 0,
+                'sisa_pembayaran' => $hargaPaketUmroh
+            );
+        }
+
+        return response()->json($pembayaranBerikutnya);
+        
+    }
+
+    public function getPembayaranBelumLunas()
+    {
+        $daftarTransaksi = Transaksi::select('id', 'tanggal_transaksi', 'nomor_transaksi', 'jamaah_id')->with([
+            'jamaah' => function($jamaah) {
+                $jamaah->select('id', 'nama');
+            }
+        ])->where('status_transaksi', 'BELUM LUNAS')->get();
+
+        return response()->json($daftarTransaksi);
     }
 }
