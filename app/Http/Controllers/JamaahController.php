@@ -41,8 +41,8 @@ class JamaahController extends Controller
             'nama' => 'required|string|unique:jamaah',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|string',
-            'telepon' => 'required|string',
-            'email' => 'string',
+            'telepon' => 'required|string|unique:jamaah',
+            'email' => 'string|unique:jamaah',
             'alamat' => 'required|string',
         ]);
 
@@ -95,11 +95,11 @@ class JamaahController extends Controller
     public function update(Request $request, Jamaah $jamaah)
     {
         $this->validate($request, [
-            'nama' => 'required|string',
+            'nama' => 'required|string|unique:jamaah,nama,' . $jamaah->id,
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|string',
-            'telepon' => 'required|string',
-            'email' => 'string',
+            'telepon' => 'required|string|unique:jamaah,telepon,' . $jamaah->id,
+            'email' => 'string|unique:jamaah,email,' . $jamaah->id,
             'alamat' => 'required|string',
         ]);
 
