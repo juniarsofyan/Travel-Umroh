@@ -38,7 +38,7 @@ class JamaahController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nama' => 'required|string',
+            'nama' => 'required|string|unique:jamaah',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|string',
             'telepon' => 'required|string',
