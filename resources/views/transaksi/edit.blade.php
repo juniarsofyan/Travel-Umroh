@@ -134,7 +134,8 @@
             <div class="col-md-12">
                 <div class="box box-success">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Jadwal Kegiatan</h3>
+                        <h3 class="box-title">Jadwal Kegiatan</h3><br/>
+                        <a href="{{ route('itinerary.print', $transaksi->id) }}" target="_blank" class="btn btn-primary btn-sm">Print</a>
                     </div>
                     <div class="box-body" id="itinerary-list">
 
@@ -205,7 +206,7 @@
             $('#itinerary-table').DataTable( {
                 dom: 'Bfrtip',
                 buttons: [
-                    'print'
+                    // 'print'
                 ]
             });
 

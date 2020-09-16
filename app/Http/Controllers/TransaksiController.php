@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\JadwalPenerbangan;
 use App\Jamaah;
 use App\JenisKamar;
+use App\Maskapai;
 use App\PaketUmroh;
 use App\TemplateItinerary;
 use App\Transaksi;
@@ -13,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\Foreach_;
+use PhpParser\Node\Stmt\TryCatch;
 
 class TransaksiController extends Controller
 {
@@ -250,11 +252,28 @@ class TransaksiController extends Controller
         $monthIndex = $monthIndex - 1;
         $yearTwoDigit = Carbon::now()->format('y');
 
-        $lastTransactionNumber = Transaksi::select('nomor_transaksi')->orderBy('nomor_transaksi', 'DESC')->limit(1)->first()->nomor_transaksi;
-        $lastTransactionNumber = (($lastTransactionNumber) ? substr($lastTransactionNumber, -4) : '0000');
-        $nomorTransaksi = "ELT" . $yearTwoDigit . $monthNumberToAlphabet[$monthIndex] . $lastTransactionNumber;
-        $nomorTransaksi++;
+        $nomorTransaksi = "ELT" . $yearTwoDigit . $monthNumberToAlphabet[$monthIndex] . '0001';
 
+        try {
+            $lastTransactionNumber = Transaksi::select('nomor_transaksi')->orderBy('nomor_transaksi', 'DESC')->limit(1)->first()->nomor_transaksi;
+            $lastTransactionNumber = (($lastTransactionNumber) ? substr($lastTransactionNumber, -4) : '0000');
+            $nomorTransaksi = "ELT" . $yearTwoDigit . $monthNumberToAlphabet[$monthIndex] . $lastTransactionNumber;
+            $nomorTransaksi++;
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        
         return $nomorTransaksi;
+    }
+
+    public function print(Transaksi $transaksi)
+    {
+        $jamaah = $transaksi->jamaah()->first();
+        $itinerary = $transaksi->itinerary()->get();
+        $paketUmroh = $transaksi->paketUmroh()->first();
+        $namaMaskapai = Maskapai::find($paketUmroh->maskapai_id)->nama;
+        $jadwalPenerbangan = JadwalPenerbangan::find($transaksi->jadwal_penerbangan_id);
+
+        return view('transaksi.itinerary', compact('itinerary', 'transaksi', 'paketUmroh', 'jamaah', 'namaMaskapai', 'jadwalPenerbangan'));
     }
 }

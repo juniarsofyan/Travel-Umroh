@@ -126,4 +126,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('itinerary-templates', 'ItineraryTemplateController')->except([
         'create'
     ]);
+    
+    Route::get('/itinerary/{transaksi}/print', 'TransaksiController@print')->name('itinerary.print');
 });
