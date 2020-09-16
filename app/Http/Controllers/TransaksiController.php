@@ -239,6 +239,7 @@ class TransaksiController extends Controller
      */
     public function destroy(Transaksi $transaksi)
     {
+        $transaksi->pembayaran()->delete();
         $transaksi->itinerary()->delete();
         $transaksi->delete();
         return redirect()->back()->with(['success' => 'Transaksi telah dihapus!']);

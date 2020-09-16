@@ -26,6 +26,11 @@ class Transaksi extends Model
         return $this->hasMany(ItineraryPaketUmroh::class);
     }
 
+    public function pembayaran()
+    {
+        return $this->hasMany(Pembayaran::class);
+    }
+
     public function paketUmroh()
     {
         // almost correct
