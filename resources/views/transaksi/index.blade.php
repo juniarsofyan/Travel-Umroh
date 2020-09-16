@@ -70,7 +70,7 @@
                                         <td>{{ $row->jenis_kamar }} </td>
                                         <td>{{ $row->jadwal_penerbangan }} </td>
                                         <td>
-                                            <form action="{{ route('transaksi.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('transaksi.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a href="{{ route('transaksi.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>

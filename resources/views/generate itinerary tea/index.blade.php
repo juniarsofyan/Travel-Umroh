@@ -75,7 +75,7 @@
                                         <td>{{ $row->jenis_kamar }} </td>
                                         <td>{{ $row->harga }} </td>
                                         <td>
-                                            <form action="{{ route('paket-umroh.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('paket-umroh.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a href="{{ route('paket-umroh.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>

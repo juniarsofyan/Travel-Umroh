@@ -68,7 +68,7 @@
                                         <td>{{ $row->nominal }} </td>
                                         <td>{{ $row->keterangan }} </td>
                                         <td>
-                                            <form action="{{ route('pembayaran.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('pembayaran.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <button class="btn btn-danger btn-sm" title="Hapus"><i class="fa fa-trash"></i></button>

@@ -63,7 +63,7 @@
                                         <td>{{ $row->kode_template }} </td>
                                         <td>{{ $row->jumlah_hari }} </td>
                                         <td>
-                                            <form action="{{ route('template-itinerary.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('template-itinerary.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a href="{{ route('template-itinerary.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>

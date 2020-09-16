@@ -72,7 +72,7 @@
                                         <td>{{ $row->waktu_takeoff }} </td>
                                         <td>{{ $row->waktu_landing }} </td>
                                         <td>
-                                            <form action="{{ route('jadwal-penerbangan.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('jadwal-penerbangan.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a href="{{ route('jadwal-penerbangan.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>

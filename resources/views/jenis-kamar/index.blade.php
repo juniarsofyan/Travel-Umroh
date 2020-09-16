@@ -64,7 +64,7 @@
                                         <td>{{ $row->jumlah_orang }} </td>
                                         <td>{{ $row->jumlah_kasur }} </td>
                                         <td>
-                                            <form action="{{ route('jenis-kamar.destroy', $row->id) }}" method="POST">
+                                            <form action="{{ route('jenis-kamar.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
                                                 <a href="{{ route('jenis-kamar.edit', $row->id) }}" class="btn btn-warning btn-sm" title="Edit"><i class="fa fa-edit"></i></a>
