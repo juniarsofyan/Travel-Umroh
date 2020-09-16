@@ -37,10 +37,10 @@
                 <button type="button" class="btn btn-primary btn-sm no-print" onclick="window.print()">Print</button>
                 <br>
                 <center><h3>ITINERARY PROGRAM {{ $paketUmroh->nama_paket }}</h3></center>
+                {{-- <br> --}}
+                {{-- <br>
                 <br>
-                <br>
-                <br>
-                Jamaah : {{ $jamaah->nama }}
+                Jamaah : {{ $jamaah->nama }} --}}
                 <br>
                 <br>
             </div>
@@ -51,7 +51,7 @@
                     <thead>
                         <tr>
                             {{-- <th>#</th> --}}
-                            <th>Hari-ke:</th>
+                            <th>Hari</th>
                             <th>Tanggal</th>
                             <th>Kegiatan</th>
                             <th>Keterangan</th>

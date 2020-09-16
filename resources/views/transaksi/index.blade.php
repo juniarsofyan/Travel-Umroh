@@ -70,6 +70,7 @@
                                         <td>{{ $row->jenis_kamar }} </td>
                                         <td>{{ $row->jadwal_penerbangan }} </td>
                                         <td>
+                                            <a href="{{ route('itinerary.print', $row->id) }}" target="_blank" class="btn btn-success btn-sm" title="Print Itinerary"><i class="fa fa-print"></i></a>
                                             <form action="{{ route('transaksi.destroy', $row->id) }}" method="POST" onsubmit="return confirmDelete()">
                                                 @csrf
                                                 <input type="hidden" name="_method" value="DELETE">
